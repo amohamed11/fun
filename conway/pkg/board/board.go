@@ -1,6 +1,7 @@
-package conway
+package board
 
 import (
+	"conway/pkg/cell"
 	"math/rand"
 	"time"
 )
@@ -31,9 +32,9 @@ func (board *Board) Tick() {
 // fills the board with dead cells
 func (board *Board) init() {
 	// setup our board of cells
-	board.cells = make([][]Cell, board.max_x)
+	board.cells = make([][]cell.Cell, board.max_x)
 	for i := range board.cells {
-		board.cells[i] = make([]Cell, board.max_y)
+		board.cells[i] = make([]cell.Cell, board.max_y)
 	}
 
 	// fill it with cells
@@ -46,7 +47,7 @@ func (board *Board) init() {
 
 func (board *Board) addCell(x int, y int) {
 	newCellId := len(board.cells) + 1
-	board.cells[x][y] = Cell.NewCell(newCellId, x, y)
+	board.cells[x][y] = cell.NewCell(newCellId, x, y)
 }
 
 func (board *Board) randInitialPattern() {

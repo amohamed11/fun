@@ -1,4 +1,4 @@
-package conway
+package cell
 
 type Cell struct {
 	id   int

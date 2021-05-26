@@ -1,14 +1,17 @@
-package conway
+package game
 
-import "time"
+import (
+	"conway/pkg/board"
+	"time"
+)
 
 type Game struct {
-	board       *Board
+	board       *board.Board
 	current_gen int
 }
 
 func NewGame(x int, y int) *Game {
-	board := NewBoard(x, y)
+	board := board.NewBoard(x, y)
 	game := Game{board: board, current_gen: 0}
 
 	return game
