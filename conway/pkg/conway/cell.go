@@ -25,3 +25,11 @@ func (cell *Cell) HandleUpdate(neighbourCount int) {
 		cell.dead = true
 	}
 }
+
+func (cell Cell) String() string {
+	if cell.dead {
+		return fmt.print("•")
+	} else {
+		return fmt.print("■")
+	}
+}

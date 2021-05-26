@@ -6,14 +6,13 @@ import (
 )
 
 type Board struct {
-	cells       [][]Cell
-	current_gen int
-	max_x       int
-	max_y       int
+	cells [][]Cell
+	max_x int
+	max_y int
 }
 
 func NewBoard(x int, y int) *Board {
-	board := Board{max_x: x, max_y: y, current_gen: 0}
+	board := Board{max_x: x, max_y: y}
 	board.init()
 	board.randInitialPattern()
 
@@ -26,8 +25,6 @@ func (board *Board) Tick() {
 		neighbourCount := board.getNeighbourCount(c)
 		c.HandleUpdate(neighbourCount)
 	}
-
-	current_gen += 1
 }
 
 // init initalizes the board
