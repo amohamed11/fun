@@ -29,7 +29,7 @@ func (board *Board) Tick() {
 		board.update()
 	}
 
-	board.current_gen += 1
+	board.current_gen++
 }
 
 // Draw handles drawing the current state of the board
@@ -65,29 +65,39 @@ func (board *Board) init() {
 
 // Update handles updating all the cells in the board
 func (board *Board) update() {
-	for _, row := range board.cells {
-		for _, c := range row {
-			neighbourCount := board.getNeighbourCount(c)
-			c.HandleUpdate(neighbourCount)
+	for x := 0; x < board.max_x; x++ {
+		for y := 0; y < board.max_y; y++ {
+			neighbourCount := board.getNeighbourCount(board.cells[x][y])
+			board.cells[x][y].HandleUpdate(neighbourCount)
 		}
 	}
 }
 
 func (board *Board) initialPattern() {
+	// arbitrary selected as the number of initial cells
+	count := 3
+
 	rand.Seed(time.Now().Unix())
-
-	// random number in range [3,9]
-	count := rand.Intn(9-3+1) + 3
-
 	for i := 0; i < count; i++ {
+
 		// random x coord in range [3, max_x - 3]
 		randX := rand.Intn((board.max_x-3)-3+1) + 3
 		// random y coord in range [3, max_y - 3]
 		randY := rand.Intn((board.max_y-3)-3+1) + 3
 
 		board.cells[randX][randY].Dead = false
-		board.cells[randX-1][randY+1].Dead = false
-		board.cells[randX+1][randY+1].Dead = false
+		r := rand.Float32()
+
+		if r < 0.33 {
+			board.cells[randX][randY-1].Dead = false
+			board.cells[randX][randY+1].Dead = false
+		} else if r >= 0.33 && r < 0.66 {
+			board.cells[randX+1][randY-1].Dead = false
+			board.cells[randX+1][randY].Dead = false
+		} else {
+			board.cells[randX-1][randY+1].Dead = false
+			board.cells[randX+1][randY+1].Dead = false
+		}
 	}
 }
 

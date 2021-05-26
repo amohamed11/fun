@@ -21,9 +21,9 @@ func NewCell(id int, x int, y int) Cell {
 //  2. Any dead cell with three live neighbours becomes a live cell.
 //  3. All other live cells die in the next generation. Similarly, all other dead cells stay dead.
 func (cell *Cell) HandleUpdate(neighbourCount int) {
-	if neighbourCount == 2 || neighbourCount == 3 {
+	if neighbourCount == 3 && cell.Dead {
 		cell.Dead = false
-	} else {
+	} else if neighbourCount < 2 || neighbourCount > 3 {
 		cell.Dead = true
 	}
 }
