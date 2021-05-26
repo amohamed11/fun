@@ -1,14 +1,16 @@
 package cell
 
+import "fmt"
+
 type Cell struct {
-	id   int
-	dead bool
-	x    int
-	y    int
+	Id   int
+	Dead bool
+	X    int
+	Y    int
 }
 
-func NewCell(id int, x int, y int) *Cell {
-	cell := Cell{id: id, x: x, y: y, dead: true}
+func NewCell(id int, x int, y int) Cell {
+	cell := Cell{Id: id, X: x, Y: y, Dead: true}
 
 	return cell
 }
@@ -20,16 +22,16 @@ func NewCell(id int, x int, y int) *Cell {
 //  3. All other live cells die in the next generation. Similarly, all other dead cells stay dead.
 func (cell *Cell) HandleUpdate(neighbourCount int) {
 	if neighbourCount == 2 || neighbourCount == 3 {
-		cell.dead = false
+		cell.Dead = false
 	} else {
-		cell.dead = true
+		cell.Dead = true
 	}
 }
 
 func (cell Cell) String() string {
-	if cell.dead {
-		return fmt.print("•")
+	if cell.Dead {
+		return fmt.Sprint("•")
 	} else {
-		return fmt.print("■")
+		return fmt.Sprint("■")
 	}
 }
