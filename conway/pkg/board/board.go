@@ -44,6 +44,7 @@ func (board *Board) Draw() {
 		}
 		fmt.Println("|")
 	}
+	fmt.Printf("Generation: %d\n", board.current_gen)
 }
 
 // init initalizes the board
@@ -71,6 +72,14 @@ func (board *Board) update() {
 			board.cells[x][y].HandleUpdate(neighbourCount)
 		}
 	}
+
+	for x := 0; x < board.max_x; x++ {
+		for y := 0; y < board.max_y; y++ {
+			if board.cells[x][y].NeedsUpdate {
+				board.cells[x][y].Flip()
+			}
+		}
+	}
 }
 
 func (board *Board) initialPattern() {
@@ -86,18 +95,8 @@ func (board *Board) initialPattern() {
 		randY := rand.Intn((board.max_y-3)-3+1) + 3
 
 		board.cells[randX][randY].Dead = false
-		r := rand.Float32()
-
-		if r < 0.33 {
-			board.cells[randX][randY-1].Dead = false
-			board.cells[randX][randY+1].Dead = false
-		} else if r >= 0.33 && r < 0.66 {
-			board.cells[randX+1][randY-1].Dead = false
-			board.cells[randX+1][randY].Dead = false
-		} else {
-			board.cells[randX-1][randY+1].Dead = false
-			board.cells[randX+1][randY+1].Dead = false
-		}
+		board.cells[randX+1][randY+1].Dead = false
+		board.cells[randX+1][randY-1].Dead = false
 	}
 }
 

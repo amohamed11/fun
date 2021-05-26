@@ -3,14 +3,14 @@ package cell
 import "fmt"
 
 type Cell struct {
-	Id   int
-	Dead bool
-	X    int
-	Y    int
+	Dead        bool
+	X           int
+	Y           int
+	NeedsUpdate bool
 }
 
 func NewCell(id int, x int, y int) Cell {
-	cell := Cell{Id: id, X: x, Y: y, Dead: true}
+	cell := Cell{X: x, Y: y, Dead: true, NeedsUpdate: false}
 
 	return cell
 }
@@ -21,11 +21,22 @@ func NewCell(id int, x int, y int) Cell {
 //  2. Any dead cell with three live neighbours becomes a live cell.
 //  3. All other live cells die in the next generation. Similarly, all other dead cells stay dead.
 func (cell *Cell) HandleUpdate(neighbourCount int) {
+	dead := false
+
 	if neighbourCount == 3 && cell.Dead {
-		cell.Dead = false
+		dead = false
 	} else if neighbourCount < 2 || neighbourCount > 3 {
-		cell.Dead = true
+		dead = true
 	}
+
+	if dead != cell.Dead {
+		cell.NeedsUpdate = true
+	}
+}
+
+func (cell *Cell) Flip() {
+	cell.Dead = !cell.Dead
+	cell.NeedsUpdate = false
 }
 
 func (cell Cell) String() string {

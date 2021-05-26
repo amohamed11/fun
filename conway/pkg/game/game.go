@@ -6,13 +6,12 @@ import (
 )
 
 type Game struct {
-	board       *board.Board
-	current_gen int
+	board *board.Board
 }
 
 func NewGame(x int, y int) *Game {
 	board := board.NewBoard(x, y)
-	game := Game{board: board, current_gen: 0}
+	game := Game{board: board}
 
 	return &game
 }
