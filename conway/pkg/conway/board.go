@@ -1,5 +1,10 @@
 package conway
 
+import (
+	"math/rand"
+	"time"
+)
+
 type Board struct {
 	cells       [][]Cell
 	current_gen int
@@ -10,6 +15,7 @@ type Board struct {
 func NewBoard(x int, y int) *Board {
 	board := Board{max_x: x, max_y: y, current_gen: 0}
 	board.init()
+	board.randInitialPattern()
 
 	return board
 }
@@ -25,7 +31,7 @@ func (board *Board) Tick() {
 }
 
 // init initalizes the board
-// fills the board with dead cells, then randomly selects 3 starting cells
+// fills the board with dead cells
 func (board *Board) init() {
 	// setup our board of cells
 	board.cells = make([][]Cell, board.max_x)
@@ -44,6 +50,24 @@ func (board *Board) init() {
 func (board *Board) addCell(x int, y int) {
 	newCellId := len(board.cells) + 1
 	board.cells[x][y] = Cell.NewCell(newCellId, x, y)
+}
+
+func (board *Board) randInitialPattern() {
+	rand.Seed(time.Now().Unix())
+
+	// random number in range [3,9]
+	count := rand.Intn(9-3+1) + 3
+
+	for _ := range count {
+		// random x coord in range [3, max_x - 3]
+		randX := rand.Intn((board.max_x-3)-3+1) - 3
+		// random y coord in range [3, max_y - 3]
+		randY := rand.Intn((board.max_y-3)-3+1) - 3
+
+		board.cells[randX][randY].dead = false
+		board.cells[randX-1][randY+1].dead = false
+		board.cells[randX+1][randY+1].dead = false
+	}
 }
 
 // getNeighbourCount takes a cell and gets the number of neighbours it has
